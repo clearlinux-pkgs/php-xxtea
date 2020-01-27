@@ -4,7 +4,7 @@
 #
 Name     : php-xxtea
 Version  : 1.0.11
-Release  : 2
+Release  : 3
 URL      : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Source0  : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Summary  : No detailed summary available
@@ -29,6 +29,7 @@ lib components for the php-xxtea package.
 
 %prep
 %setup -q -n xxtea-1.0.11
+cd %{_builddir}/xxtea-1.0.11
 
 %build
 export http_proxy=http://127.0.0.1:9/
@@ -47,4 +48,4 @@ make  %{?_smp_mflags}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/extensions/no-debug-non-zts-20180731/xxtea.so
+/usr/lib64/extensions/no-debug-non-zts-20190902/xxtea.so
