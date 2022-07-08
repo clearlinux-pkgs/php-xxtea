@@ -4,13 +4,12 @@
 #
 Name     : php-xxtea
 Version  : 1.0.11
-Release  : 8
+Release  : 10
 URL      : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Source0  : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : MIT
-Requires: php-xxtea-lib = %{version}-%{release}
 BuildRequires : buildreq-php
 
 %description
@@ -18,14 +17,6 @@ BuildRequires : buildreq-php
 <a href="https://github.com/xxtea/">
 <img src="https://avatars1.githubusercontent.com/u/6683159?v=3&s=86" alt="XXTEA logo" title="XXTEA" align="right" />
 </a>
-
-%package lib
-Summary: lib components for the php-xxtea package.
-Group: Libraries
-
-%description lib
-lib components for the php-xxtea package.
-
 
 %prep
 %setup -q -n xxtea-1.0.11
@@ -36,7 +27,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 phpize
-%configure
+%configure --disable-static
 make  %{?_smp_mflags}
 
 %install
@@ -45,7 +36,3 @@ make  %{?_smp_mflags}
 
 %files
 %defattr(-,root,root,-)
-
-%files lib
-%defattr(-,root,root,-)
-/usr/lib64/extensions/no-debug-non-zts-20190902/xxtea.so
