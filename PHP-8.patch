@@ -1,0 +1,61 @@
+From ea17b8cb1c7ecca5af3ece4420c4b2880984b41a Mon Sep 17 00:00:00 2001
+From: Jan Ehrhardt <github@ehrhardt.nl>
+Date: Thu, 3 Dec 2020 17:40:24 +0100
+Subject: [PATCH] Add PHP8 compatibility
+
+The first change deal with the issue that win32/php_stdint.h does not exist anymore in PHP8, but the VS16 compiler does provide a inttypes.h. So we check if we are using a MSVC compiler and if it is a lower version than Visual Studio 2019 (or VS16).
+
+The other chages deal with the fact that the TSRMLS macros have been removed in PHP8. They already did not do anything at all in PHP7, but they are gone completely now
+---
+ php_xxtea.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/php_xxtea.c b/php_xxtea.c
+index 7001270..c0cf743 100644
+--- a/php_xxtea.c
++++ b/php_xxtea.c
+@@ -16,7 +16,7 @@
+ #include "php_xxtea.h"
+ #include "ext/standard/info.h" /* for phpinfo() functions */
+ 
+-#if defined(_MSC_VER)
++#if defined(_MSC_VER) && _MSC_VER < 1920
+ #include "win32/php_stdint.h"
+ #elif defined(__FreeBSD__) && __FreeBSD__ < 5
+ /* FreeBSD 4 doesn't have stdint.h file */
+@@ -281,7 +281,11 @@ ZEND_FUNCTION(xxtea_encrypt) {
+     size_t i, ret_length;
+     uint8_t fixed_key[16];
+ 
++#ifdef TSRMLS_CC
+     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &data, &data_len, &key, &key_len) == FAILURE) {
++#else
++    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &data, &data_len, &key, &key_len) == FAILURE) {
++#endif
+         return;
+     }
+     if (data_len == 0) {
+@@ -314,7 +318,11 @@ ZEND_FUNCTION(xxtea_decrypt) {
+     size_t i, ret_length;
+     uint8_t fixed_key[16];
+ 
++#ifdef TSRMLS_CC
+     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &data, &data_len, &key, &key_len) == FAILURE) {
++#else
++    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &data, &data_len, &key, &key_len) == FAILURE) {
++#endif
+         return;
+     }
+     if (data_len == 0) {
+@@ -346,7 +354,11 @@ static zend_function_entry xxtea_method[] = {
+ ZEND_MINIT_FUNCTION(xxtea) {
+     zend_class_entry ce;
+     INIT_CLASS_ENTRY(ce, "XXTEA", xxtea_method);
++#ifdef TSRMLS_CC
+     xxtea_ce = zend_register_internal_class(&ce TSRMLS_CC);
++#else
++    xxtea_ce = zend_register_internal_class(&ce);
++#endif
+     return SUCCESS;
+ }
+ 
