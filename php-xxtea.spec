@@ -4,7 +4,7 @@
 #
 Name     : php-xxtea
 Version  : 1.0.11
-Release  : 25
+Release  : 26
 URL      : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Source0  : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Summary  : No detailed summary available
@@ -62,7 +62,7 @@ cp %{_builddir}/xxtea-%{version}/LICENSE.md %{buildroot}/usr/share/package-licen
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/extensions/no-debug-non-zts-20210902/xxtea.so
+/usr/lib64/extensions/no-debug-non-zts-20220829/xxtea.so
 
 %files license
 %defattr(0644,root,root,0755)
