@@ -4,7 +4,7 @@
 #
 Name     : php-xxtea
 Version  : 1.0.11
-Release  : 33
+Release  : 34
 URL      : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Source0  : https://pecl.php.net//get/xxtea-1.0.11.tgz
 Summary  : No detailed summary available
